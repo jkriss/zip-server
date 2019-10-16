@@ -1,0 +1,17 @@
+{
+  "name": "zip-server",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jesse Kriss <jesse@jklabs.net>",
+  "license": "ISC",
+  "dependencies": {
+    "debug": "^4.1.1",
+    "jszip": "^3.2.2",
+    "mime": "^2.4.4",
+    "parse-raw-http": "0.0.1"
+  }
+}
