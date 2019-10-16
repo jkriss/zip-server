@@ -4,7 +4,7 @@ const mime = require('mime/lite')
 
 const startHttp = Buffer.from(`HTTP/1.1 `)
 const startHttp2 = Buffer.from(`HTTP/2 `)
-const raw404 = `HTTP/1.1 404 Not Found\r\n\r\n`
+const raw404 = Buffer.from(`HTTP/1.1 404 Not Found\r\n\r\n`)
 const LF = '\r\n'
 
 const isHttpResponse = function(buf) {
