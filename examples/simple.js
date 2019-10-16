@@ -5,8 +5,9 @@ const http = require('http')
 const url = require('url')
 
 const PORT = 4000
+const zipFilePath = process.argv.slice(2)[0] || path.join(__dirname, 'simple.zip')
 
-const zipFile = fs.readFileSync(path.join(__dirname, 'simple.zip'))
+const zipFile = fs.readFileSync(zipFilePath)
 const zipServer = new ZipServer(zipFile)
 
 const server = http.createServer((req, res) => {

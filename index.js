@@ -34,8 +34,20 @@ class ZipServer {
     })
   }
 
-  async get(pathname) {
-    let realPath = pathname.slice(1)
+  dir(pathname) {
+    let html = '<ul>'
+    const folder = pathname.split('/').slice(0,-1).join('/')
+    debug(`making dir listing for ${folder}`)
+    this.zip.folder(folder).forEach(p => {
+      if (!p.match(/\/.+/))
+        html += `<li><a href="${p}">${p}</a></li>`
+    })
+    html += '</ul>'
+    return makeResponse(Buffer.from(html), { 'Content-Type': 'text/html' }) 
+  }
+
+  async get(pathname, opts={}) {
+    let realPath = decodeURIComponent(pathname.slice(1))
     if (realPath === '') realPath = 'index.html'
     debug(`getting ${pathname}`)
     debug(`real path is ${realPath}`)
@@ -43,8 +55,12 @@ class ZipServer {
     debug("done waiting, looking for file")
     let fileEntry = this.zip.file(realPath)
     if (!fileEntry) {
-      debug(`didn't find ${pathname}, returning 404`)
-      return raw404
+      debug(`didn't find ${pathname}`)
+      if (opts.directoryListing === false) {
+        return raw404
+      } else {
+        return this.dir(realPath)
+      }
     } else {
       const buf = await fileEntry.async("nodebuffer")
       if (isHttpResponse(buf)) { 
